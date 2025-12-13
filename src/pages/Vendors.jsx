@@ -1,51 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import api from '../api.js';
 
 export default function Vendors() {
+  const { type } = useParams(); // restaurant / grocery
   const [vendors, setVendors] = useState([]);
 
   useEffect(() => {
-    api.get('/vendors')
+    api.get(`/vendors?type=${type}`)
       .then(res => setVendors(res.data))
       .catch(err => console.error(err));
-  }, []);
-
-  // Group vendors by their type (Restaurant, Grocery, etc.)
-  const grouped = vendors.reduce((acc, vendor) => {
-    const key = vendor.type || 'Others';
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(vendor);
-    return acc;
-  }, {});
+  }, [type]);
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Vendors</h1>
+    <div>
+      <h1>{type === 'restaurant' ? 'Restaurants' : 'Grocery'}</h1>
+      <Link to="/">← Back</Link>
 
-      {Object.keys(grouped).map(type => (
-        <div key={type} style={{ marginBottom: 30 }}>
-          <h2>{type}</h2> {/* Folder name */}
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: 15,
-            marginTop: 10
-          }}>
-            {grouped[type].map(vendor => (
-              <div key={vendor._id} style={{ border: '1px solid #ccc', padding: 15, borderRadius: 8 }}>
-                <h3>{vendor.name}</h3>
-                {vendor.description && <p>{vendor.description}</p>}
-                <Link to={`/vendors/${vendor._id}/categories`} 
-                      style={{ display: 'inline-block', marginTop: 5, color: '#007bff' }}>
-                  View Categories
-                </Link>
-              </div>
-            ))}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))',
+        gap: 15,
+        marginTop: 10
+      }}>
+        {vendors.map(v => (
+          <div key={v._id} style={{ border: '1px solid #ccc', padding: 15 }}>
+            <h3>{v.name}</h3>
+            <Link to={`/vendors/${v._id}`}>View Categories</Link>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

@@ -4,8 +4,7 @@ import { useState } from 'react';
 export default function UserLayout() {
   const [cart, setCart] = useState([]);
 
-  // Example function to add item to cart from any child component
-  // You can pass this function via context or props if needed
+  // Add product to cart
   const addToCart = (product) => {
     setCart(prev => {
       const exists = prev.find(item => item._id === product._id);
@@ -30,15 +29,14 @@ export default function UserLayout() {
             <Link to="/vendors">Vendors</Link>
           </div>
           <div>
-            <Link to="/cart">
-              Cart ({totalItems})
-            </Link>
+            <Link to="/cart">Cart ({totalItems})</Link>
           </div>
         </div>
       </header>
 
       <main className="container" style={{ padding: '20px 0' }}>
-        <Outlet context={{ cart, addToCart }} />
+        {/* Pass cart and addToCart to child pages */}
+        <Outlet context={{ cart, addToCart, setCart }} />
       </main>
     </div>
   );

@@ -1,50 +1,30 @@
 import { useState } from 'react';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
-import api from '../api.js';
-
 
 export default function Register() {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
+  const handleRegister = async () => {
+    try {
+      await api.post('/auth/register', { name, email, password });
+      alert('Registered successfully!');
+      navigate('/login');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Registration failed');
+    }
+  };
 
-const register = async () => {
-try {
-await api.post('/auth/register', { email, password });
-alert('Registration successful');
-navigate('/login');
-} catch (err) {
-alert('Registration failed');
-console.error(err);
-}
-};
-
-
-return (
-<div style={{ padding:20 }}>
-<h2>Register</h2>
-<div style={{ marginBottom:10 }}>
-<input
-type="email"
-placeholder="Email"
-value={email}
-onChange={e => setEmail(e.target.value)}
-style={{ padding:8, width:'100%' }}
-/>
-</div>
-<div style={{ marginBottom:10 }}>
-<input
-type="password"
-placeholder="Password"
-value={password}
-onChange={e => setPassword(e.target.value)}
-style={{ padding:8, width:'100%' }}
-/>
-</div>
-<button onClick={register} style={{ padding:10, background:'#2563EB', color:'#fff', border:'none', width:'100%' }}>
-Register
-</button>
-</div>
-);
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Register</h2>
+      <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleRegister}>Register</button>
+    </div>
+  );
 }

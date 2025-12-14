@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-
 export default function UserPrivateRoute() {
-return localStorage.getItem('userToken') ? <Outlet /> : <Navigate to="/login" />;
+  const token = localStorage.getItem('userToken');
+  return token ? <Outlet /> : <Navigate to="/login" />;
 }

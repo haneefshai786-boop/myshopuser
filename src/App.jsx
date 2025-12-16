@@ -1,4 +1,4 @@
-mport { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import UserLayout from './layout/UserLayout.jsx';
 import Home from './pages/Home.jsx';
@@ -18,12 +18,14 @@ export default function App() {
       <Route path="/" element={<UserLayout />}>
         <Route index element={<Home />} />
         <Route path="vendors" element={<Vendors />} />
-        <Route path="vendors/:vendorId" element={<Categories />} >
-        <Route path="vendors/:vendorId/categories/:categoryId" el>
-        <Route path="vendors/:vendorId/categories/:categoryId/sub>
-        <Route path="product/:productId" element={<ProductDetail >
+        <Route path="vendors/:vendorId" element={<Categories />} />
+        <Route
+          path="vendors/:vendorId/categories/:categoryId"
+          element={<Subcategories />}
+        />
+        <Route path="product/:productId" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="checkout" element={<Checkout />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
